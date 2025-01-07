@@ -84,7 +84,7 @@ Features like **Special Defense (Sp_Defense)**, **HP**, and **Special Attack (Sp
 <img src="https://github.com/user-attachments/assets/b000e34c-7194-44e3-9c2c-0a31a74140a1" alt="Outlier Identification" width="600">
 </div>
 
-#### Handling Outliers
+#### Removing Outliers
 <div align="center">
 <img src="https://github.com/user-attachments/assets/378ce851-0524-494d-b337-d8e627a3dc33" alt="Outlier Handling" width="600">
 </div>
@@ -166,13 +166,13 @@ Used for baseline comparison:
 The ROC curve shows Random Forest outperforms the Decision Tree:
 
 <div align="center">
-<img src="https://github.com/user-attachments/assets/783e63b9-abf8-42fa-9e86-faf8eef58e15" alt="ROC Curve" width="600">
+<img src="https://github.com/user-attachments/assets/212870d3-4b91-4508-8a18-ca1819ebd405" alt="ROC Curve" width="600">
 </div>
 
 ### Legendary Feature Importance Analysis
 
 <div align="center">
-<img src="https://github.com/user-attachments/assets/de87cc0f-651f-4ead-880a-5fee62147f26" alt="Feature Importance" width="600">
+<img src="https://github.com/user-attachments/assets/18415ed2-bd84-4a3d-ab59-f8a9ed7fc340" alt="Feature Importance" width="600">
 </div>
 
 ---
