@@ -60,26 +60,26 @@ These factors should be enough for our use case as these describe all the import
 
 Looking at the distribution of types along with their legendary status we mainly notice 2 things. First - water type has the highest number of Pokémon's in it followed by normal and grass, Second - there are a bunch of types that don't have any legendary Pokémon's in them eg. water, bug, grass, poison.
 
-<categorical vairable exploration>
+![categorical_variable_exploration](https://github.com/user-attachments/assets/cad74064-5124-4f33-a9a7-91b9ca805000)
 
 ##### 2. Now we should Analyse the Spread of all the different Features by looking at a Density Plot
 
 We can see that in the case of features like attack and speed there are larger number of Pokémon's that are average whereas features like hp, height, weight show that larger number of Pokémon's are shorter, lighter and have low hp.
 
-<Density histogram>
+![density_histogram](https://github.com/user-attachments/assets/25762ddb-0916-47ef-91d1-a54eac9919a3)
 
 ##### 3. How are the features correlated to Popularity Score?
 
 Here we can explore the relationship between popularity score and other features to identify trends and correlations.
 If we take a look at the graph it seems like sp_defense, hp, sp_attack have a significant impact on the popularity score wherease speed and attack have a moderate positive correlation.
 
-<scatter plot bivariate analysis>
+![scatter_plot_bivariate_analysis](https://github.com/user-attachments/assets/8266ca64-5de2-4949-8948-bedb4ec99ca5)
 
 ##### 4. Which Pokémon types are generally more popular?
 
 We can clearly see that people tend to like dragon type more compared to all the other types. As we have the box-plot here we can also take a look at the outliers.
 
-<boxplot>
+![boxplot](https://github.com/user-attachments/assets/6b6379b0-2d08-4b17-9019-4751a72b9ee0)
 
 #### Handling Outliers
 
@@ -87,7 +87,11 @@ There are some outliers that we need to handle so that we get a more accurate pr
 
 **Identifying Outliers**
 
+![identifying_outliers](https://github.com/user-attachments/assets/b000e34c-7194-44e3-9c2c-0a31a74140a1)
+
 **Handling Outliers**
+
+![handling_outliers](https://github.com/user-attachments/assets/378ce851-0524-494d-b337-d8e627a3dc33)
 
 #### Create Train/Test Split
 
@@ -123,13 +127,13 @@ It's interesting to see height and sp_defense as the features that people find t
 
 On the contrary people don't really care about a Pokémon's name or gender which is an important thing to note.
 
-<feature importance plot>
+![feature_importance_plot](https://github.com/user-attachments/assets/7504096a-b894-4cda-976a-dee359ae25ba)
 
 ##### What are the Features that Contribute the most in a Pokémon's Popularity?
 
 Here is a pie chart visualising the relative contribution of features in Pokémon popularity.
 
-<attach pie chart>
+![attach_pie_chart](https://github.com/user-attachments/assets/86c51ecf-c335-4e7e-b62b-62036a172463)
 
 ---
 
@@ -143,7 +147,7 @@ After browsing the dataset, we can see several variables that could feasibly exp
 
 We now know that there are 70 legendary Pokémon – a sizable minority at 9% of the population! Let's start to explore some of their distinguishing characteristics.
 
-<insert table>
+![insert_table](https://github.com/user-attachments/assets/399b873c-0052-49ae-9308-68093ddab5f7)
 
 ##### 2. Legendary Pokémon by height and weight
 
@@ -151,19 +155,19 @@ We'll add conditional labels to the plot, which will only print a Pokémon's nam
 
 It seems that legendary Pokémon are generally heavier and taller, but with many exceptions. For example, Onix (Gen 1), Steelix (Gen 2) and Wailord (Gen 3) are all extremely tall, but none of them have legendary status. There must be other factors at play.
 
-<add scatter plot>
+![add_scatter_plot](https://github.com/user-attachments/assets/db30e396-33ea-44d6-82bb-861873e8651e)
 
 ##### 3. Legendary Pokémon by type
 
 There are clear differences between Pokémon types in their relation to legendary status. While more than 30% of flying and psychic Pokémon are legendary, there is no such thing as a legendary poison or fighting Pokémon!
 
-<add type bar plot>
+![add_type_bar_plot](https://github.com/user-attachments/assets/09cb5ec7-819a-45f0-8fdc-9f849efc0208)
 
 ##### 4. Legendary Pokémon by fighter stats
 
 As we might expect, legendary Pokémon outshine their ordinary counterparts in all fighter stats. Although we haven't formally tested a difference in means, the boxplots suggest a significant difference with respect to all six variables. Nonetheless, there are a number of outliers in each case, meaning that some legendary Pokémon are anomalously weak.
 
-<box plot>
+![box_plot](https://github.com/user-attachments/assets/121c811b-7618-49ac-9cf3-665daed6de6b)
 
 #### Create a training/test split
 
@@ -185,7 +189,7 @@ Before we fit a random forest, we will fit a simple classification decision tree
 
 Here, and also in the random forest, we will omit incomplete observations by setting the na.action argument to na.omit. This will remove a few Pokémon with missing values for height_m and weight_kg from the training set. Remember the warning messages when we made our height/weight plot in Task 3? These are the Pokémon to blame!
 
-<add decision tree graph>
+![add_decision_tree_graph](https://github.com/user-attachments/assets/dec9bf19-f11d-45b4-b141-5a9e01ef48ff)
 
 #### Fit a random forest
 
@@ -210,7 +214,7 @@ In order to allow direct comparison with the decision tree, we will plot the ROC
 
 It's clear from the ROC curves that the random forest is a substantially better model, boasting an AUC (not calculated above) of 91% versus the decision tree's 78%. When calculating variable importance, it makes sense to do so with the best model available, so we'll use the random forest for the final part of our analysis.
 
-<add the curve>
+![add_the_curve](https://github.com/user-attachments/assets/783e63b9-abf8-42fa-9e86-faf8eef58e15)
 
 #### Analyze variable importance
 
@@ -220,7 +224,7 @@ Note that a random forest returns two measures of variable importance:
 - MeanDecreaseGini – the degree to which a variable improves the probability of an observation being classified one way or another (i.e. 'node purity').
   Together, these two measures will allow us to answer our original research question – what makes a Pokémon legendary?
 
-<add the graph>
+![add_the_graph](https://github.com/user-attachments/assets/de87cc0f-651f-4ead-880a-5fee62147f26)
 
 ---
 
