@@ -1,251 +1,214 @@
-# What makes a Pokémon popular amongst viewers?
+# What Makes a Pokémon Popular Amongst Viewers?
 
 ## Introduction
+To increase viewer retention, we need to identify the factors that contribute most to a Pokémon's popularity because **Pokémon popularity and viewer retention are directly proportional**. 
 
-To increase viewer retention we need to know the factors that contribute the most to a Pokémon's popularity, because **Pokémon popularity and viewer retention are directly proportional**.
+By uncovering these factors, we can focus on enhancing them for other Pokémon, thereby improving viewer retention and **increasing overall revenue**. In this project, we will analyze these factors in depth. Additionally, we’ll explore **what makes a Pokémon legendary**, a highly significant topic among Pokémon enthusiasts.
 
-If we somehow figure out the factors that contribute the most we could work on them for other Pokémon's as well and get better viewer retention, **increasing overall revenue**.
+---
 
-In this project we'll dive deep into analyzing and figuring out those factors. Also, we'll figure out **what makes a Pokémon legendary** as that's a big deal amongst Pokémon fanbase.
+## Dataset Information
+The dataset used in this project is `pokemon_dataset.csv`, which contains detailed statistics and attributes of Pokémon, including:
+
+- **Basic stats**: `height_m`, `weight_kg`, `attack`, `defense`, etc.
+- **Attributes**: `type`, `generation`, and `legendary status`.
+- **Additional metrics**: `capture_rate`, `pokedex_number`, and `popularity_score`.
+
+This dataset forms the basis for identifying popularity trends and determining legendary status predictors.
 
 ---
 
 ## Table of Contents
 
-- [What factors that contribute the most to a Pokémon's popularity?](#What-are-the-Factors-that-Contribute-the-most-to-a-Pokémon's-Popularity-amongst-Viewers?)
-  - [Variable Exploration](#Variable-Exploration)
-  - [Handling Outliers](#Handling-Outliers)
-  - [Create Train/Test Split](#Create-Train/Test-Split)
-  - [Fitting Model (randomForest)](#Fitting-Model)
-  - [Analysing Model Performance](#Analysing-Model-Performance)
-  - [Analysing Feature Importance](#Analysing-Feature-Importance)
-- [What makes a Pokémon legendary?](#What-Makes-a-Pokémon-Legendary?)
-  - [Variable Exploration](#Variable-Exploration)
-  - [Create Train/Test Split](#Create-a-training/test-split)
-  - [Fitting Decision Tree](#Fit-a-decision-tree)
-  - [Fitting Random Forest](#Fit-a-random-forest)
-  - [Assess Model Fit](#Assess-model-fit)
-  - [Analysing Feature Importance](#Analyze-variable-importance)
-- [Answering Business Problems](#Answering-Business-Problems)
-- [Conclusion](#Conclusion)
+1. [Factors Contributing to Pokémon Popularity](#factors-contributing-to-pokémon-popularity)
+   - [Variable Exploration](#variable-exploration)
+   - [Handling Outliers](#handling-outliers)
+   - [Train/Test Split](#traintest-split)
+   - [Model Fitting (Random Forest)](#model-fitting-random-forest)
+   - [Model Performance Analysis](#model-performance-analysis)
+   - [Feature Importance Analysis](#feature-importance-analysis)
+2. [What Makes a Pokémon Legendary?](#what-makes-a-pokémon-legendary)
+   - [Variable Exploration](#legendary-variable-exploration)
+   - [Train/Test Split](#legendary-traintest-split)
+   - [Decision Tree Fitting](#decision-tree-fitting)
+   - [Random Forest Fitting](#random-forest-fitting)
+   - [Model Fit Assessment](#model-fit-assessment)
+   - [Feature Importance Analysis](#legendary-feature-importance-analysis)
+3. [Answering Business Problems](#answering-business-problems)
+   - [Popularity](#popularity)
+   - [Legendary Status](#legendary-status)
+4. [Conclusion](#conclusion)
 
 ---
 
-### What are the Factors that Contribute the most to a Pokémon's Popularity amongst Viewers?
-
-To find the factors that contribute the most we need to look at the individual features of each Pokémon. There must be certain features or type that people find more desirable and if we successfully in finding those features we can predict and increase viewer retention by using those particular Pokémon's that have those desirable features in them, also we could tweak features for other Pokémon's in the feature.
-
-This is a list of all the features that we'll be looking at while figuring out the most important ones.
-
-- height_m
-- weight_kg
-- attack
-- defense
-- s_attack
-- s_defense
-- type
-- generation
-- capture_rate
-- pokedex_number
-- legendary status
-- hp
-- speed
-- percentage_male
-
-These factors should be enough for our use case as these describe all the important features of a given Pokémon.
-
-#### Variable Exploration
-
-##### 1. Which types have the most number of Pokémon's?
-
-Looking at the distribution of types along with their legendary status we mainly notice 2 things. First - water type has the highest number of Pokémon's in it followed by normal and grass, Second - there are a bunch of types that don't have any legendary Pokémon's in them eg. water, bug, grass, poison.
-
-![categorical_variable_exploration](https://github.com/user-attachments/assets/cad74064-5124-4f33-a9a7-91b9ca805000)
-
-##### 2. Now we should Analyse the Spread of all the different Features by looking at a Density Plot
-
-We can see that in the case of features like attack and speed there are larger number of Pokémon's that are average whereas features like hp, height, weight show that larger number of Pokémon's are shorter, lighter and have low hp.
-
-![density_histogram](https://github.com/user-attachments/assets/25762ddb-0916-47ef-91d1-a54eac9919a3)
-
-##### 3. How are the features correlated to Popularity Score?
-
-Here we can explore the relationship between popularity score and other features to identify trends and correlations.
-If we take a look at the graph it seems like sp_defense, hp, sp_attack have a significant impact on the popularity score wherease speed and attack have a moderate positive correlation.
-
-![scatter_plot_bivariate_analysis](https://github.com/user-attachments/assets/8266ca64-5de2-4949-8948-bedb4ec99ca5)
-
-##### 4. Which Pokémon types are generally more popular?
-
-We can clearly see that people tend to like dragon type more compared to all the other types. As we have the box-plot here we can also take a look at the outliers.
-
-![boxplot](https://github.com/user-attachments/assets/6b6379b0-2d08-4b17-9019-4751a72b9ee0)
-
-#### Handling Outliers
-
-There are some outliers that we need to handle so that we get a more accurate prediction.
-
-**Identifying Outliers**
-
-![identifying_outliers](https://github.com/user-attachments/assets/b000e34c-7194-44e3-9c2c-0a31a74140a1)
-
-**Handling Outliers**
-
-![handling_outliers](https://github.com/user-attachments/assets/378ce851-0524-494d-b337-d8e627a3dc33)
-
-#### Create Train/Test Split
-
-We have now explored all of the predictor variables we will use to explain what makes a Pokémon popular. Before fitting our model, we will split the dataset into a training set and a test set. This will allow us to test the model on unseen data.
-
-```r
-  train_index <- createDataPartition(pokemon$popularity_score, p = 0.8, list = FALSE)
-  train_data <- pokemon[train_index, ]
-  test_data <- pokemon[-train_index, ]
-```
-
-#### Fitting Model
-
-We'll fit a random forest – an ensemble method that averages over several decision trees all at once. It provides a robust measure of feature importance, including non-linear interactions.
-
-```r
-  rf_model <- randomForest(popularity_score ~ ., data = train_data, importance = TRUE, ntree = 500)
-```
-
-#### Analysing Model Performance
-
-Let's take a look at the MSE score to assess our model's performance on unseen data. Note that lower score is better.
-
-**Mean Squared Error (Random Forest): 7.129137**
-
-#### Analysing Feature Importance
-
-##### Most important predictors for Pokémon Popularity
-
-Pokedex Number seems to be the hightest predicter as Pokémon with lower Pokedex numbers were among the first to be discovered within the lore of the Pokémon universe or introduced in the games. Same goes for the generation, so it naturally makes sense as Pokémon's that are discovered first will have more screen on time therefore more popularity.
-
-It's interesting to see height and sp_defense as the features that people find the most desirable.
-
-On the contrary people don't really care about a Pokémon's name or gender which is an important thing to note.
-
-![feature_importance_plot](https://github.com/user-attachments/assets/7504096a-b894-4cda-976a-dee359ae25ba)
-
-##### What are the Features that Contribute the most in a Pokémon's Popularity?
-
-Here is a pie chart visualising the relative contribution of features in Pokémon popularity.
-
-![attach_pie_chart](https://github.com/user-attachments/assets/86c51ecf-c335-4e7e-b62b-62036a172463)
-
----
-
-### What Makes a Pokémon Legendary?
-
-After browsing the dataset, we can see several variables that could feasibly explain what makes a Pokémon legendary. We have a series of numerical fighter stats – attack, defense, speed and so on – as well as a categorization of Pokemon type. is_legendary is the binary classification variable we will eventually be predicting, tagged 1 if a Pokémon is legendary and 0 if it is not.
+## Factors Contributing to Pokémon Popularity
 
 ### Variable Exploration
 
-##### 1. How many Pokémon are legendary?
+#### 1. Which types have the most Pokémon?
+The distribution of types and their legendary status reveals that:
 
-We now know that there are 70 legendary Pokémon – a sizable minority at 9% of the population! Let's start to explore some of their distinguishing characteristics.
+- **Water type** has the highest number of Pokémon, followed by Normal and Grass.
+- Several types (e.g., Bug, Grass, Poison) do not have any legendary Pokémon.
 
-![insert_table](https://github.com/user-attachments/assets/399b873c-0052-49ae-9308-68093ddab5f7)
+<div align="center">
+<img src="https://github.com/user-attachments/assets/cad74064-5124-4f33-a9a7-91b9ca805000" alt="Distribution of Types" width="600">
+</div>
 
-##### 2. Legendary Pokémon by height and weight
+#### 2. Spread of Features: Density Plot
+- **Attack** and **Speed** show a large number of average Pokémon.
+- **HP**, **Height**, and **Weight** show most Pokémon as shorter, lighter, and having lower HP.
 
-We'll add conditional labels to the plot, which will only print a Pokémon's name if it is taller than 7.5m or heavier than 600kg.
+<div align="center">
+<img src="https://github.com/user-attachments/assets/25762ddb-0916-47ef-91d1-a54eac9919a3" alt="Density Histogram" width="600">
+</div>
 
-It seems that legendary Pokémon are generally heavier and taller, but with many exceptions. For example, Onix (Gen 1), Steelix (Gen 2) and Wailord (Gen 3) are all extremely tall, but none of them have legendary status. There must be other factors at play.
+#### 3. Feature Correlation with Popularity Score
+Features like **Special Defense (Sp_Defense)**, **HP**, and **Special Attack (Sp_Attack)** have significant correlations, while **Speed** and **Attack** have moderate positive correlations.
 
-![add_scatter_plot](https://github.com/user-attachments/assets/db30e396-33ea-44d6-82bb-861873e8651e)
+<div align="center">
+<img src="https://github.com/user-attachments/assets/8266ca64-5de2-4949-8948-bedb4ec99ca5" alt="Correlation Analysis" width="600">
+</div>
 
-##### 3. Legendary Pokémon by type
+#### 4. Popular Pokémon Types
+**Dragon types** are generally more popular compared to others, with clear outliers visible in the box plot.
 
-There are clear differences between Pokémon types in their relation to legendary status. While more than 30% of flying and psychic Pokémon are legendary, there is no such thing as a legendary poison or fighting Pokémon!
+<div align="center">
+<img src="https://github.com/user-attachments/assets/6b6379b0-2d08-4b17-9019-4751a72b9ee0" alt="Box Plot of Types" width="600">
+</div>
 
-![add_type_bar_plot](https://github.com/user-attachments/assets/09cb5ec7-819a-45f0-8fdc-9f849efc0208)
+### Handling Outliers
 
-##### 4. Legendary Pokémon by fighter stats
+#### Identifying Outliers
+<div align="center">
+<img src="https://github.com/user-attachments/assets/b000e34c-7194-44e3-9c2c-0a31a74140a1" alt="Outlier Identification" width="600">
+</div>
 
-As we might expect, legendary Pokémon outshine their ordinary counterparts in all fighter stats. Although we haven't formally tested a difference in means, the boxplots suggest a significant difference with respect to all six variables. Nonetheless, there are a number of outliers in each case, meaning that some legendary Pokémon are anomalously weak.
+#### Handling Outliers
+<div align="center">
+<img src="https://github.com/user-attachments/assets/378ce851-0524-494d-b337-d8e627a3dc33" alt="Outlier Handling" width="600">
+</div>
 
-![box_plot](https://github.com/user-attachments/assets/121c811b-7618-49ac-9cf3-665daed6de6b)
-
-#### Create a training/test split
-
-We have now explored all of the predictor variables we will use to explain what makes a Pokémon legendary. Before fitting our model, we will split the pokedex into a training set and a test set. This will allow us to test the model on unseen data.
+### Train/Test Split
+To ensure robust testing, we split the dataset:
 
 ```r
-  n <- nrow(pokemon)
-  sample_rows <- sample(n, 0.7 * n)
-
-  pokemon_train <- pokemon %>%
-    filter(row_number() %in% sample_rows)
-  pokemon_test <- pokemon %>%
-    filter(!row_number() %in% sample_rows)
+train_index <- createDataPartition(pokemon$popularity_score, p = 0.8, list = FALSE)
+train_data <- pokemon[train_index, ]
+test_data <- pokemon[-train_index, ]
 ```
 
-#### Fit a decision tree
+### Model Fitting (Random Forest)
+We use a **Random Forest model** for its robustness and ability to handle non-linear interactions:
 
-Before we fit a random forest, we will fit a simple classification decision tree. This will give us a baseline fit against which to compare the results of the random forest, as well as an informative graphical representation of the model.
-
-Here, and also in the random forest, we will omit incomplete observations by setting the na.action argument to na.omit. This will remove a few Pokémon with missing values for height_m and weight_kg from the training set. Remember the warning messages when we made our height/weight plot in Task 3? These are the Pokémon to blame!
-
-![add_decision_tree_graph](https://github.com/user-attachments/assets/dec9bf19-f11d-45b4-b141-5a9e01ef48ff)
-
-#### Fit a random forest
-
-Decision trees are unstable and sensitive to small variations in the data. It therefore makes sense to fit a random forest – an ensemble method that averages over several decision trees all at once. This should give us a more robust model that classifies Pokémon with greater accuracy.
-
-```
-  Type of random forest: classification
-    Number of trees: 500
-    No. of variables tried at each split: 3
-
-  OOB estimate of  error rate: 6.41%
-  Confusion matrix:
-      0  1 class.error
-  0 488  7  0.01414141
-  1  28 23  0.54901961
-
+```r
+rf_model <- randomForest(popularity_score ~ ., data = train_data, importance = TRUE, ntree = 500)
 ```
 
-#### Assess model fit
+### Model Performance Analysis
+**Mean Squared Error (Random Forest):** 7.13
 
-In order to allow direct comparison with the decision tree, we will plot the ROC curves for both models using the ROCR package, which will visualize their true positive rate (TPR) and false positive rate (FPR) respectively. The closer the curve is to the top left of the plot, the higher the area under the curve (AUC) and the better the model.
+### Feature Importance Analysis
+Key predictors include:
 
-It's clear from the ROC curves that the random forest is a substantially better model, boasting an AUC (not calculated above) of 91% versus the decision tree's 78%. When calculating variable importance, it makes sense to do so with the best model available, so we'll use the random forest for the final part of our analysis.
+- **Pokedex Number** and **Generation** (earlier Pokémon have more screen time).
+- **Height** and **Sp_Defense** (desirable features).
+- **Gender** and **Name** are less important.
 
-![add_the_curve](https://github.com/user-attachments/assets/783e63b9-abf8-42fa-9e86-faf8eef58e15)
-
-#### Analyze variable importance
-
-Note that a random forest returns two measures of variable importance:
-
-- MeanDecreaseAccuracy – how much the model accuracy suffers if you leave out a particular variable
-- MeanDecreaseGini – the degree to which a variable improves the probability of an observation being classified one way or another (i.e. 'node purity').
-  Together, these two measures will allow us to answer our original research question – what makes a Pokémon legendary?
-
-![add_the_graph](https://github.com/user-attachments/assets/de87cc0f-651f-4ead-880a-5fee62147f26)
+<div align="center">
+<img src="https://github.com/user-attachments/assets/7504096a-b894-4cda-976a-dee359ae25ba" alt="Feature Importance" width="600">
+</div>
 
 ---
 
-#### Answering Business Problems
+## What Makes a Pokémon Legendary?
 
-##### Popularity
+### Legendary Variable Exploration
 
-##### Legendary Status
+#### 1. How many Pokémon are legendary?
+- 70 Pokémon (9%) are legendary.
 
-1. Is the `attack` or `defense` variable more important?
-   answer <- "attack"
+#### 2. Legendary Pokémon by Height and Weight
+Legendary Pokémon are generally heavier and taller, but there are exceptions.
 
-2. Is the `weight_kg` or `height_m` variable more important?
-   answer <- "weight_kg"
+<div align="center">
+<img src="https://github.com/user-attachments/assets/db30e396-33ea-44d6-82bb-861873e8651e" alt="Height and Weight Analysis" width="600">
+</div>
 
-3. Is the `attack` or `defense` variable more important?
-   answer <- "defense"
+#### 3. Legendary Pokémon by Type
+Certain types (e.g., Flying, Psychic) have a higher proportion of legendary Pokémon.
 
-4. Is the `weight_kg` or `height_m` variable more important?
-   answer <- "weight_kg"
+<div align="center">
+<img src="https://github.com/user-attachments/assets/09cb5ec7-819a-45f0-8fdc-9f849efc0208" alt="Type Analysis" width="600">
+</div>
+
+### Legendary Train/Test Split
+
+```r
+n <- nrow(pokemon)
+sample_rows <- sample(n, 0.7 * n)
+
+pokemon_train <- pokemon %>% filter(row_number() %in% sample_rows)
+pokemon_test <- pokemon %>% filter(!row_number() %in% sample_rows)
+```
+
+### Decision Tree Fitting
+Used for baseline comparison:
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/dec9bf19-f11d-45b4-b141-5a9e01ef48ff" alt="Decision Tree" width="600">
+</div>
+
+### Random Forest Fitting
+- **OOB Error Rate:** 6.41%
+
+### Model Fit Assessment
+The ROC curve shows Random Forest outperforms the Decision Tree:
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/783e63b9-abf8-42fa-9e86-faf8eef58e15" alt="ROC Curve" width="600">
+</div>
+
+### Legendary Feature Importance Analysis
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/de87cc0f-651f-4ead-880a-5fee62147f26" alt="Feature Importance" width="600">
+</div>
 
 ---
 
-#### Conclusion
+## Answering Business Problems
+
+### Popularity
+
+1. **Which Pokémon type correlates most with popularity?**  
+   **Answer:** Dragon.
+
+2. **Does generation impact popularity?**  
+   **Answer:** Yes, earlier generations are more popular.
+
+3. **Is height or weight more important for popularity?**  
+   **Answer:** Height.
+
+4. **Does Sp_Attack or Sp_Defense have a higher impact?**  
+   **Answer:** Sp_Defense.
+
+5. **What feature is least significant for popularity?**  
+   **Answer:** Gender.
+
+### Legendary Status
+
+1. **Is `attack` or `defense` more important?**  
+   **Answer:** Attack.
+
+2. **Is `weight_kg` or `height_m` more important?**  
+   **Answer:** Weight.
+
+---
+
+## Conclusion
+This analysis highlights the factors driving Pokémon popularity and legendary status. Strategic use of these insights can improve viewer retention and foster a more engaged fanbase.
+
+---
+
+*Project by [Yash Chowdhary](https://github.com/YashChowdhary34/pokemon-viewer-retention-analysis).*
